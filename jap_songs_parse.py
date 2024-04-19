@@ -25,7 +25,9 @@ for i in range(1, 353300):
         continue
     
     out_file.write(name_formatted)
+    out_file.write('\n')
     out_file.write(m.group(1))
+    out_file.write('\n')
     out_file.write(text_formatted)
     out_file.close()
     print('ID' + str(i) + ' completed.')
