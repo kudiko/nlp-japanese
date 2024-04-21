@@ -2,14 +2,23 @@ from bs4 import BeautifulSoup
 import time
 import requests
 import re
+import os
+cwd = os.getcwd()
 
-
-
-for i in range(1, 353300):
+for i in range(2560, 353300):
     time.sleep(1)
-    content = requests.get('https://www.uta-net.com/song/' + str(i)).text
     
-    out_file = open(str(i) + ".txt", "w")
+    content = None
+    while True:
+        try:
+            content = requests.get('https://www.uta-net.com/song/' + str(i)).text
+        except:
+            print("Error in requests.get in id " + str(i) + ", retrying ...")
+            continue
+        break
+    
+    
+    out_file = open(cwd + "/parse_results/" + str(i) + ".txt", "w")
     soup = BeautifulSoup(content, 'html.parser')
     name_unformatted = soup.title.string
     name_formatted = name_unformatted.replace('歌詞 - 歌ネット','') 
@@ -23,6 +32,9 @@ for i in range(1, 353300):
     m = re.search(p, date_text)
     if not m:
         continue
+        
+    
+
     
     out_file.write(name_formatted)
     out_file.write('\n')
