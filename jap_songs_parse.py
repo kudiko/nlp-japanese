@@ -5,7 +5,13 @@ import re
 import os
 cwd = os.getcwd()
 
-for i in range(3500, 353300):
+
+from datetime import datetime
+
+logfile = open("log.txt", "a")
+
+
+for i in range(231690, 300000):
     time.sleep(1)
     
     content = None
@@ -21,7 +27,11 @@ for i in range(3500, 353300):
     out_file = open(cwd + "/parse_results/" + str(i) + ".txt", "w")
     soup = BeautifulSoup(content, 'html.parser')
     name_unformatted = soup.title.string
-    name_formatted = name_unformatted.replace('歌詞 - 歌ネット','') 
+    name_formatted = ""
+    
+    if (isinstance(name_unformatted, str)):
+    	name_formatted = name_unformatted.replace('歌詞 - 歌ネット','')
+    	
     if(name_formatted == 'uta-net.com'):
         continue;
     text_unformatted = soup.find('div', id='kashi_area').get_text()
@@ -34,8 +44,6 @@ for i in range(3500, 353300):
         continue
         
     
-
-    
     out_file.write(name_formatted)
     out_file.write('\n')
     out_file.write(m.group(1))
@@ -43,5 +51,10 @@ for i in range(3500, 353300):
     out_file.write(text_formatted)
     out_file.write('\n')
     out_file.close()
+    
+    now = datetime.now()
+    logfile.write(str(now) + ': ' + 'ID' + str(i) + ' completed. \n')
+    
+    
     print('ID' + str(i) + ' completed.')
 
