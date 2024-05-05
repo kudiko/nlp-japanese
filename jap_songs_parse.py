@@ -11,8 +11,8 @@ from datetime import datetime
 logfile = open("log.txt", "a")
 
 
-for i in range(231690, 300000):
-    time.sleep(1)
+for i in range(195000, 200000):
+   # time.sleep(1)
     
     content = None
     while True:
@@ -33,8 +33,12 @@ for i in range(231690, 300000):
     	name_formatted = name_unformatted.replace('歌詞 - 歌ネット','')
     	
     if(name_formatted == 'uta-net.com'):
-        continue;
-    text_unformatted = soup.find('div', id='kashi_area').get_text()
+        continue
+    
+    div_tag = soup.find('div', id='kashi_area')
+    if div_tag is None:
+    	continue
+    text_unformatted = div_tag.get_text()
     text_formatted = text_unformatted.replace('\u3000', '')
     
     date_text = soup.find('p', class_ ="ms-2 ms-md-3 detail mb-0").get_text()
